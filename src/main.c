@@ -8,26 +8,39 @@
 int main(void)
 {
 	SDL_Instance instance;
+	SDL_Event event = {0};
+	const unsigned char keys[KEYS];
 	Vector player;
 	double time = 0; /* time of current frame */
 	double oldTime = 0; /* time of previous frame */
+	_Bool quit = false; /* the quit flag */
 
-	player.posX = 22;
-	player.posY = 12;
 	player.dirX = -1;
 	player.dirY = 0;
+	player.posX = 22;
+	player.posY = 12;
 	player.planeX = 0;
 	player.planeY = 0.66;
 
-	if (init_instance(&instance) != 0)
-		return (1);
-	while ("C is awesome")
+	/* Start up SDL and create window */
+	if (!initialize_SDL(&instance))
 	{
-		raycaster(player, &time, &oldTime, &instance);
-		SDL_SetRenderDrawColor(instance.renderer, 0, 0, 0, 0);
-		SDL_RenderClear(instance.renderer);
-		draw_something(instance);
-		SDL_RenderPresent(instance.renderer);
+		fprintf(stderr, "Failed to initialize!\n");
+	} else
+	{
+		while (!quit)
+		{
+			SDL_SetRenderDrawColor(instance.renderer, 0x0, 0x0, 0x0, 0x0);
+			SDL_RenderClear(instance.renderer);
+			if (poll_events() == 1)
+				break;
+			raycaster(player, &time, &oldTime, &instance, &event, true,
+					keys);
+			SDL_RenderPresent(instance.renderer);
+			/* Hack to get window to stay up */
+			keep_window(&quit);
+		}
+		end(&instance);
 	}
 	return (0);
 }
