@@ -12,9 +12,9 @@
  */
 typedef struct ColorRGBA
 {
-	int red;
-	int green;
-	int blue;
+	Uint8 red;
+	Uint8 green;
+	Uint8 blue;
 	float alpha;
 } ColorRGBA;
 
@@ -28,5 +28,7 @@ void rgba_mul(ColorRGBA *color, int n, float a);
 ColorRGBA rgba_color_div(ColorRGBA color1, ColorRGBA color2);
 void rgba_div(ColorRGBA *color, int n, float a);
 int rgba_color_comp(ColorRGBA color1, ColorRGBA color2);
+
+ColorRGBA color_wall(int wall_code,	int side);
 
 #endif /* _COLORS_H_ */
